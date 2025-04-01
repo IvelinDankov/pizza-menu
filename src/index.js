@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "./index.css";
 
 const pizzaData = [
   {
@@ -48,22 +49,85 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
-      <h1>Hello React!</h1>,
-      <Pizza />
-      <Pizza />
-      <Pizza />
+    <div className="container">
+      <Header />
+      <Menu />
+      <Footer />
     </div>
   );
 }
 
-function Pizza() {
+function Header() {
+  // const style = { color: "red", fontSize: "48px", textTransform: "uppercase" };
+  const style = {};
+
   return (
-    <div>
-      <img src="pizzas/spinaci.jpg" alt="Pizza spinaci" />
-      <h2>Pizza Spinaci</h2>
-      <p>Tomato, mozarella, spinach, and ricotta cheese</p>
-    </div>
+    <header className="header">
+      <h1 style={style}>Fast React Pizza Co.</h1>
+    </header>
+  );
+}
+
+function Menu() {
+  return (
+    <main className="menu">
+      <h2>Our menu</h2>
+
+      <ul className="pizzas">
+        {pizzaData.map((pizza, index) => (
+          <Pizza pizzaObj={pizza} key={index + 1} />
+        ))}
+      </ul>
+
+      {/* <Pizza
+        name="Pizza Spinaci"
+        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
+        photoName="pizzas/spinaci.jpg"
+        price={10}
+      />
+      <Pizza
+        name="Pizza Funghi"
+        ingredients="Tomato, mushooms"
+        price={12}
+        photoName="pizzas/funghi.jpg"
+      /> */}
+    </main>
+  );
+}
+
+function Pizza(props) {
+  console.log(props);
+
+  return (
+    <li className="pizza">
+      <div>
+        <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span> {props.pizzaObj.price} </span>
+      </div>
+    </li>
+  );
+}
+
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 11;
+  const closeHour = 22;
+  const isOpen = hour >= openHour && hour <= closeHour;
+
+  console.log(isOpen);
+
+  // if (hour >= openHour && hour <= closeHour) {
+  //   alert("We're currently open!");
+  // } else {
+  //   alert("Sorry we're closed");
+  // }
+
+  return (
+    <footer className="footer">
+      {new Date().toLocaleTimeString()} "We're currently open."
+    </footer>
   );
 }
 
