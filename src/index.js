@@ -69,15 +69,30 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our menu</h2>
 
-      <ul className="pizzas">
-        {pizzaData.map((pizza, index) => (
-          <Pizza pizzaObj={pizza} key={index + 1} />
-        ))}
-      </ul>
+      {numPizzas > 0 ? (
+        <React.Fragment>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes ot choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+
+          <ul className="pizzas">
+            {pizzas.map((pizza, index) => (
+              <Pizza pizzaObj={pizza} key={index + 1} />
+            ))}
+          </ul>
+        </React.Fragment>
+      ) : (
+        <p> We're still working on our menu. Please come back later : </p>
+      )}
 
       {/* <Pizza
         name="Pizza Spinaci"
@@ -95,16 +110,18 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
-  console.log(props);
+function Pizza({ pizzaObj }) {
+  console.log(pizzaObj);
+
+  // if (pizzaObj.soldOut) return null;
 
   return (
-    <li className="pizza">
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
       <div>
-        <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span> {props.pizzaObj.price} </span>
+        <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span> {pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price} </span>
       </div>
     </li>
   );
@@ -124,10 +141,33 @@ function Footer() {
   //   alert("Sorry we're closed");
   // }
 
+  // if (!isOpen) {
+  //   return (
+  //     <p>
+  //       We're happy to welcome between {openHour}:00. and {closeHour}:00
+  //     </p>
+  //   );
+  // }
+
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()} "We're currently open."
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          We're happy to welcome between {openHour}:00. and {closeHour}:00.
+        </p>
+      )}
     </footer>
+  );
+}
+
+function Order({ closeHour }) {
+  return (
+    <div className="order">
+      <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
